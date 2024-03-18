@@ -63,10 +63,11 @@
 
         <div class="mb-3 col">
             <label for="parking" class="form-label">Filter by parking:</label>
+
             <select class="form-select" name="parking" id="parking">
-                <option value="">All</option>
-                <option value="1">With parking</option>
-                <option value="0">Without parking</option>
+                <option value=""> All </option>
+                <option value="1"> With parking </option>
+                <option value="0"> Without parking </option>
             </select>
         </div>
 
@@ -118,7 +119,12 @@
             foreach ($filteredHotels as $currentHotel) {
                 echo "
                 <tr> ";
-                    foreach ($currentHotel as $value) {
+                    foreach ($currentHotel as $key => $value ) {
+
+                        if ($key == 'parking') {
+                            $value = ($value) ? 'yes' : 'no';
+                        }
+
                         echo "
                         <td>
                             $value 
