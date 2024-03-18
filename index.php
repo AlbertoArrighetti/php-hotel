@@ -41,6 +41,9 @@
     ];
 
     $parkingValue = $_GET['parking'];
+    $ratingValue = $_GET['vote'];
+
+
     $filteredHotels = [];
 ?>
 
@@ -71,10 +74,18 @@
             </select>
         </div>
 
-        <div class="col">
-            -- ALTRO FORM DA STRUTTURARE --
-        </div>
+        <div class="mb-3 col">
+            <label for="vote" class="form-label">Filter by vote:</label>
 
+            <select class="form-select" name="vote" id="vote">
+                <option value=""> All </option>
+                <option value="1"> 1 star or higher </option>
+                <option value="2"> 2 stars or higher </option>
+                <option value="3"> 3 stars or higher </option>
+                <option value="4"> 4 stars or higher </option>
+                <option value="5"> 5 stars or higher </option>
+            </select>
+        </div>
 
 
 
@@ -106,25 +117,35 @@
         <tbody>
             <?php
 
-            if ($parkingValue == null) {
+            if ($parkingValue == null && $ratingValue == null) {
                 $filteredHotels = $hotels;
             } else {
-                $filteredHotels = array_filter($hotels, function ($hotel) use ($parkingValue) {
 
-                    return $hotel['parking'] == $parkingValue;
+                $filteredHotels = $hotels;
 
-                });
+                if ($ratingValue !== null) {
+                    $filteredHotels = array_filter($filteredHotels, function ($hotel) use ($ratingValue) {
+                        return $hotel['vote'] >= $ratingValue;
+                    });
+
+                }
+                
+                if ($parkingValue !== null) {
+                    $filteredHotels = array_filter($hotels, function ($hotel) use ($parkingValue) {
+                        return $hotel['parking'] == $parkingValue;
+                    });
+                }
+
+                
             }
 
             foreach ($filteredHotels as $currentHotel) {
                 echo "
                 <tr> ";
                     foreach ($currentHotel as $key => $value ) {
-
                         if ($key == 'parking') {
                             $value = ($value) ? 'yes' : 'no';
                         }
-
                         echo "
                         <td>
                             $value 
@@ -135,9 +156,6 @@
                 </tr>
                 ";
             } 
-
-
-
             ?>
         </tbody>
     </table>
