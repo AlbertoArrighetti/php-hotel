@@ -1,3 +1,47 @@
+<?php
+
+    $hotels = [
+
+        [
+            'name' => 'Hotel Belvedere',
+            'description' => 'Hotel Belvedere Descrizione',
+            'parking' => true,
+            'vote' => 4,
+            'distance to center' => 10.4
+        ],
+        [
+            'name' => 'Hotel Futuro',
+            'description' => 'Hotel Futuro Descrizione',
+            'parking' => true,
+            'vote' => 2,
+            'distance to center' => 2
+        ],
+        [
+            'name' => 'Hotel Rivamare',
+            'description' => 'Hotel Rivamare Descrizione',
+            'parking' => false,
+            'vote' => 1,
+            'distance to center' => 1
+        ],
+        [
+            'name' => 'Hotel Bellavista',
+            'description' => 'Hotel Bellavista Descrizione',
+            'parking' => false,
+            'vote' => 5,
+            'distance to center' => 5.5
+        ],
+        [
+            'name' => 'Hotel Milano',
+            'description' => 'Hotel Milano Descrizione',
+            'parking' => true,
+            'vote' => 2,
+            'distance to center' => 50
+        ],
+
+    ];
+
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,7 +55,48 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container my-5 ">
+
+
+    <table class="table">
+        <thead>
+            <?php
+            $hotelProperties = array_keys($hotels[0]);
+                echo "
+                <tr> ";
+                    foreach ($hotelProperties as $property) {
+                        echo "
+                        <th>
+                            {$property}
+                        </th>
+                        ";
+                    }
+                echo "
+                </tr>
+                ";
+            ?>
+        </thead>
+
+
+        <tbody>
+            <?php
+            foreach ($hotels as $currentHotel) {
+                echo "
+                <tr> ";
+                    foreach ($currentHotel as $value) {
+                        echo "
+                        <td>
+                            $value
+                        </td>
+                        ";
+                    }
+                echo "
+                </tr>
+                ";
+            } 
+            ?>
+        </tbody>
+    </table>
 
 </div>
     
