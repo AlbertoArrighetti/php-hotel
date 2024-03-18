@@ -40,6 +40,8 @@
 
     ];
 
+    $parkingValue = $_GET['parking'];
+    $filteredHotels = [];
 ?>
 
 <!DOCTYPE html>
@@ -57,17 +59,39 @@
 
 <div class="container my-5 ">
 
+    <form method="get" action="./index.php" class="row">
+
+        <div class="mb-3 col">
+            <label for="parking" class="form-label">Filter by parking:</label>
+            <select class="form-select" name="parking" id="parking">
+                <option value="">All</option>
+                <option value="1">With parking</option>
+                <option value="0">Without parking</option>
+            </select>
+        </div>
+
+        <div class="col">
+            -- ALTRO FORM DA STRUTTURARE --
+        </div>
+
+
+
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary w-25 ">Filter</button>
+        </div>
+    </form>
 
     <table class="table">
         <thead>
             <?php
-            $hotelProperties = array_keys($hotels[0]);
+            $hotelProperties = array_keys( $hotels[0] );
                 echo "
                 <tr> ";
                     foreach ($hotelProperties as $property) {
                         echo "
                         <th>
-                            {$property}
+                            $property
                         </th>
                         ";
                     }
@@ -80,13 +104,24 @@
 
         <tbody>
             <?php
-            foreach ($hotels as $currentHotel) {
+
+            if ($parkingValue == null) {
+                $filteredHotels = $hotels;
+            } else {
+                $filteredHotels = array_filter($hotels, function ($hotel) use ($parkingValue) {
+
+                    return $hotel['parking'] == $parkingValue;
+
+                });
+            }
+
+            foreach ($filteredHotels as $currentHotel) {
                 echo "
                 <tr> ";
                     foreach ($currentHotel as $value) {
                         echo "
                         <td>
-                            $value
+                            $value 
                         </td>
                         ";
                     }
@@ -94,6 +129,9 @@
                 </tr>
                 ";
             } 
+
+
+
             ?>
         </tbody>
     </table>
