@@ -40,10 +40,11 @@
 
     ];
 
+    // prelevo i valori 
     $parkingValue = $_GET['parking'];
     $ratingValue = $_GET['vote'];
 
-
+    // array con i filtri attivi
     $filteredHotels = [];
 ?>
 
@@ -64,6 +65,7 @@
 
     <form method="get" action="./index.php" class="row">
 
+        <!-- form per selezionare se presente o meno il parcheggio  -->
         <div class="mb-3 col">
             <label for="parking" class="form-label">Filter by parking:</label>
 
@@ -73,7 +75,7 @@
                 <option value="0"> Without parking </option>
             </select>
         </div>
-
+        <!-- form per selezionare il voto dell'hotel -->
         <div class="mb-3 col">
             <label for="vote" class="form-label">Filter by vote:</label>
 
@@ -88,7 +90,7 @@
         </div>
 
 
-
+        <!-- btn -->
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary w-25 ">Filter</button>
         </div>
@@ -116,34 +118,44 @@
 
         <tbody>
             <?php
-
+            // se entrambi i valori sono nulli
             if ($parkingValue == null && $ratingValue == null) {
+                // i due array si equivalgono
                 $filteredHotels = $hotels;
+            
+            // Altrimenti 
             } else {
 
+                // i due array inizialmente sono uguali 
                 $filteredHotels = $hotels;
+                // se il valore di parking non è più nullo
+                if ($parkingValue !== null) {
 
+                    // filtrare l'array in modo da visualizzare gli hotel con parcheggio presente o meno
+                    // gestisco in modo tale che se si seleziona un voto ma si indica il valore del parcheggio. Il parcheggio avrà sempre valore ' ' 
+                    $filteredHotels = array_filter($filteredHotels, function ($hotel) use ($parkingValue) {
+                        return ($parkingValue == "") || ($hotel['parking'] == $parkingValue);
+                    });
+                }
+                // faccio lo stesso per il voto
                 if ($ratingValue !== null) {
                     $filteredHotels = array_filter($filteredHotels, function ($hotel) use ($ratingValue) {
+                        
+                        // qui visualizzo nell'array solo gli hotel che hanno quel valore o superiore 
                         return $hotel['vote'] >= $ratingValue;
                     });
-
                 }
-                
-                if ($parkingValue !== null) {
-                    $filteredHotels = array_filter($hotels, function ($hotel) use ($parkingValue) {
-                        return $hotel['parking'] == $parkingValue;
-                    });
-                }
-
-                
             }
 
+
+            // per ognunpo creo una row 
             foreach ($filteredHotels as $currentHotel) {
                 echo "
                 <tr> ";
+                // e inserisco ogni valore 
                     foreach ($currentHotel as $key => $value ) {
                         if ($key == 'parking') {
+                            // cambio il valore di parking da booleano a stringa 
                             $value = ($value) ? 'yes' : 'no';
                         }
                         echo "
